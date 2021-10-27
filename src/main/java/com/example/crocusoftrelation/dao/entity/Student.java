@@ -27,7 +27,7 @@ public class Student {
     @ManyToMany
     List<Course> courses;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     Address address;
 
 }

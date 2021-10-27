@@ -1,6 +1,7 @@
 package com.example.crocusoftrelation.dto.response;
 
 import com.example.crocusoftrelation.dao.entity.Student;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,5 +20,6 @@ public class AddressResponsedto {
     String permanent;
     String temporary;
 
+    @JsonBackReference
     Student student;
 }

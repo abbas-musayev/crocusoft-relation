@@ -20,7 +20,7 @@ public class StudentRequestDto {
     String name;
     String surname;
 
-    List<Course> courses;
+    List<Long> courses;
 
-    Address address;
+    AddressRequestDto address;
 }

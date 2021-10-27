@@ -19,5 +19,5 @@ public class CourseRequestDto {
 
     String name;
 
-    List<Student> students;
+    List<Long> students;
 }

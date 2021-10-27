@@ -17,5 +17,5 @@ public class AddressRequestDto {
     String permanent;
     String temporary;
 
-    Student student;
+    StudentRequestDto student;
 }
