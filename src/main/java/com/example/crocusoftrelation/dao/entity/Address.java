@@ -22,6 +22,4 @@ public class Address {
     String permanent;
     String temporary;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    Student student;
 }

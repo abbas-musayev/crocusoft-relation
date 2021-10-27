@@ -1,9 +1,7 @@
 package com.example.crocusoftrelation.dao.entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
@@ -24,10 +22,13 @@ public class Student {
     String name;
     String surname;
 
+    @ToString.Exclude
+    @JsonBackReference
     @ManyToMany
     List<Course> courses;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @JsonBackReference
+    @OneToOne(cascade = CascadeType.ALL)
     Address address;
-
 }

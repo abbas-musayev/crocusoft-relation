@@ -16,6 +16,4 @@ public class AddressRequestDto {
     Long id;
     String permanent;
     String temporary;
-
-    Student student;
 }
