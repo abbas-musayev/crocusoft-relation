@@ -2,6 +2,7 @@ package com.example.crocusoftrelation.dto.response;
 
 import com.example.crocusoftrelation.dao.entity.Address;
 import com.example.crocusoftrelation.dao.entity.Course;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -20,9 +21,9 @@ public class StudentResponseDto {
     String name;
     String surname;
 
-    @JsonManagedReference
+    @JsonBackReference
     List<Course> courses;
 
-    @JsonManagedReference
+    @JsonBackReference
     Address address;
 }

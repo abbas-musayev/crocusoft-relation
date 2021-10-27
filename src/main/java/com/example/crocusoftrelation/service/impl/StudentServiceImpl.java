@@ -34,7 +34,6 @@ public class StudentServiceImpl implements StudentService {
             throw new CustomNotFoundException("The id of the student must be 0 or null");
         Student map = modelMapper.map(request, Student.class);
         Address address = modelMapper.map(request.getAddress(), Address.class);
-//        courseRepo.findCoursesByStudentId()
 
         for (Long item : request.getCourses()) {
             if (item!=null || item!=0){
@@ -42,8 +41,6 @@ public class StudentServiceImpl implements StudentService {
                 map.getCourses().add(course);
             }
         }
-//        addressRepo.save(map.getAddress());
-//        map.setAddress(address);          Yoxlamadadi
         studentRepo.save(map);
         return "Student Saved";
     }
@@ -52,9 +49,11 @@ public class StudentServiceImpl implements StudentService {
     public String updateStudent(StudentRequestDto request) {
         if (request.getId()==0)
             throw new CustomNotFoundException("The id of the student must be 0 or null");
-//     Student save olunanda addreside qeyd edilmelidi ve bu zaman Yeni Address save olunur
+
         var map = modelMapper.map(request, Student.class);
+
         List<Course> courses = courseRepo.findCoursesByStudentId(request.getId());
+
         log.info("Student Service -> Studentin Kurslari Geldi {}",courses);
         for (Long item : request.getCourses()) {
             Course course = courseRepo.findById(item)
@@ -64,9 +63,8 @@ public class StudentServiceImpl implements StudentService {
         log.info("Student Service -> Studentin Kurslari Bunlardi {}",courses);
 
         map.setCourses(courses);
-        addressRepo.save(map.getAddress());
         studentRepo.save(map);
-        return "Student Saved";
+        return "Student Updated";
     }
 
     @Override
