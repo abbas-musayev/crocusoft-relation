@@ -1,6 +1,5 @@
 package com.example.crocusoftrelation.service;
 
-import com.example.crocusoftrelation.dao.entity.Student;
 import com.example.crocusoftrelation.dto.request.StudentRequestDto;
 import com.example.crocusoftrelation.dto.response.StudentResponseDto;
 

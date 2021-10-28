@@ -24,7 +24,6 @@ import java.util.List;
 public class StudentServiceImpl implements StudentService {
 
     private final StudentRepo studentRepo;
-    private final AddressRepo addressRepo;
     private final CourseRepo courseRepo;
     private final ModelMapper modelMapper;
 
@@ -54,13 +53,11 @@ public class StudentServiceImpl implements StudentService {
 
         List<Course> courses = courseRepo.findCoursesByStudentId(request.getId());
 
-        log.info("Student Service -> Studentin Kurslari Geldi {}",courses);
         for (Long item : request.getCourses()) {
             Course course = courseRepo.findById(item)
                     .orElseThrow(() -> new CustomNotFoundException("Course Id does not exist"));
             courses.add(course);
         }
-        log.info("Student Service -> Studentin Kurslari Bunlardi {}",courses);
 
         map.setCourses(courses);
         studentRepo.save(map);

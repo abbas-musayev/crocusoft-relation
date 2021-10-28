@@ -24,7 +24,7 @@ public class Student {
 
     @ToString.Exclude
     @JsonBackReference
-    @ManyToMany
+    @ManyToMany(mappedBy = "students")
     List<Course> courses;
 
     @ToString.Exclude

@@ -6,7 +6,6 @@ import com.example.crocusoftrelation.dao.repo.CourseRepo;
 import com.example.crocusoftrelation.dao.repo.StudentRepo;
 import com.example.crocusoftrelation.dto.request.CourseRequestDto;
 import com.example.crocusoftrelation.dto.response.CourseResponsedto;
-import com.example.crocusoftrelation.dto.response.StudentResponseDto;
 import com.example.crocusoftrelation.exception.CustomNotFoundException;
 import com.example.crocusoftrelation.service.CourseService;
 import lombok.RequiredArgsConstructor;
@@ -30,13 +29,15 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public String saveCourse(CourseRequestDto request) {
 
+
+
         if (request.getId()>0)
             throw new CustomNotFoundException("The id of the course must be 0 or null");
 
         Course map = modelMapper.map(request, Course.class);
 
         for (Long item : request.getStudents()) {
-            if (item!=0 || item!=null) {
+            if (item!=0 && item!=null) {
                 var student = studentRepo.findById(item).get();
                 map.getStudents().add(student);
             }
@@ -48,20 +49,22 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public String updateCourse(CourseRequestDto request) { // Islemir
+    public String updateCourse(CourseRequestDto request) {
+
+        courseRepo.findById(request.getId()).orElseThrow(()-> new CustomNotFoundException("Course Id does not exist"));
+
         if (request.getId()==0)
             throw new CustomNotFoundException("The id of the course must be 0 or null");
 
         Course map = modelMapper.map(request, Course.class);
 
         List<Student> students = studentRepo.findStudentsByCourseId(request.getId());
-        log.info("CourseService -> findStudentsByCourseId DB dan geldii {}",students);
 
         for (Long item : request.getStudents()) {
-            Student student = studentRepo.findById(item).orElseThrow(() -> new CustomNotFoundException("Student id does not exist"));
+            Student student = studentRepo.findById(item)
+                    .orElseThrow(() -> new CustomNotFoundException("Student id does not exist"));
             students.add(student);
         }
-        log.info("CourseService -> Course Yeni Studentler elave edildi{}",students);
 
         map.setStudents(students);
         courseRepo.save(map);
@@ -70,7 +73,8 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public CourseResponsedto findCourseById(Long id) {
-        Course course = courseRepo.findById(id).get();
+        Course course = courseRepo.findById(id)
+                .orElseThrow(()-> new CustomNotFoundException("Course Id does not exist"));
         return modelMapper.map(course,CourseResponsedto.class);
     }
 
