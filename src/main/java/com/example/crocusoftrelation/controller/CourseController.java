@@ -21,8 +21,8 @@ public class CourseController {
         return ResponseEntity.ok(courseService.saveCourse(request));
     }
     @PutMapping
-    public ResponseEntity<String> update(@RequestBody CourseRequestDto request){
-        return ResponseEntity.ok(courseService.updateCourse(request));
+    public ResponseEntity<String> update(@RequestParam Long id, @RequestBody CourseRequestDto request){
+        return ResponseEntity.ok(courseService.updateCourse(id,request));
     }
 
     @GetMapping("/findCoursesByStudentId")

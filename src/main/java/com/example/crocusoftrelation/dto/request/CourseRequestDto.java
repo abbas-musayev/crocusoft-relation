@@ -15,9 +15,6 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CourseRequestDto {
 
-    Long id;
-
     String name;
-
     List<Long> students;
 }

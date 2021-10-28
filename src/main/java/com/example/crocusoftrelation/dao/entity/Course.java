@@ -22,7 +22,6 @@ public class Course {
     String name;
 
     @ToString.Exclude
-    @JsonBackReference
     @ManyToMany()
     List<Student> students;
 

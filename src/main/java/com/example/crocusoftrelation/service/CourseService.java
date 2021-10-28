@@ -9,7 +9,7 @@ public interface CourseService {
 
     String saveCourse(CourseRequestDto request);
 
-    String updateCourse(CourseRequestDto request);
+    String updateCourse(Long id,CourseRequestDto request);
 
     CourseResponsedto findCourseById(Long id);
 
