@@ -29,16 +29,19 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public String saveCourse(CourseRequestDto request) {
 
-
-
         if (request.getId()>0)
             throw new CustomNotFoundException("The id of the course must be 0 or null");
 
+
         Course map = modelMapper.map(request, Course.class);
 
+        if (request.getStudents().isEmpty()){
+            throw new CustomNotFoundException("StudentList is Empty");
+        }
         for (Long item : request.getStudents()) {
-            if (item!=0 && item!=null) {
-                var student = studentRepo.findById(item).get();
+            if (item!=0) {
+                var student = studentRepo.findById(item)
+                        .orElseThrow(()-> new CustomNotFoundException("Student does not exist"));
                 map.getStudents().add(student);
             }
         }
@@ -50,6 +53,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public String updateCourse(CourseRequestDto request) {
+
 
         courseRepo.findById(request.getId()).orElseThrow(()-> new CustomNotFoundException("Course Id does not exist"));
 
