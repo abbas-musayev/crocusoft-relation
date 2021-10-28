@@ -29,12 +29,11 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public String saveStudent(StudentRequestDto request) {
-        if (request.getId()>0)
-            throw new CustomNotFoundException("The id of the student must be 0 or null");
-        Student map = modelMapper.map(request, Student.class);
-        Address address = modelMapper.map(request.getAddress(), Address.class);
 
+        Student map = modelMapper.map(request, Student.class);
         for (Long item : request.getCourses()) {
+//          The reason I write if here is not to throw an exception directly when there is no student_id
+//          Because when a student saves, he may not join any course
             if (item!=null || item!=0){
                 Course course = courseRepo.findById(item).get();
                 map.getCourses().add(course);
@@ -45,23 +44,33 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public String updateStudent(StudentRequestDto request) {
-        if (request.getId()==0)
-            throw new CustomNotFoundException("The id of the student must be 0 or null");
+    public String updateStudent(Long id,StudentRequestDto request) {
+        Student student = studentRepo.findById(id)
+                .orElseThrow(() -> new CustomNotFoundException("Student id:" + id + " does not exist"));
 
-        var map = modelMapper.map(request, Student.class);
-
-        List<Course> courses = courseRepo.findCoursesByStudentId(request.getId());
-
+        List<Course> courses = student.getCourses();
         for (Long item : request.getCourses()) {
             Course course = courseRepo.findById(item)
-                    .orElseThrow(() -> new CustomNotFoundException("Course Id does not exist"));
+                    .orElseThrow(() -> new CustomNotFoundException("Course id:"+id+"does not exist"));
             courses.add(course);
         }
+        student.setCourses(courses);
+        studentRepo.save(student);
+        return "Student Saved";
 
-        map.setCourses(courses);
-        studentRepo.save(map);
-        return "Student Updated";
+//        var map = modelMapper.map(id, Student.class);
+//
+//        List<Course> courses = courseRepo.findCoursesByStudentId(id);
+//
+//        for (Long item : request.getCourses()) {
+//            Course course = courseRepo.findById(item)
+//                    .orElseThrow(() -> new CustomNotFoundException("Course Id does not exist"));
+//            courses.add(course);
+//        }
+//
+//        map.setCourses(courses);
+//        studentRepo.save(map);
+//        return "Student Updated";
     }
 
     @Override

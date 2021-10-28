@@ -22,8 +22,8 @@ public class StudentController {
     }
 
     @PutMapping
-    public ResponseEntity<String> updateStudent(@RequestBody StudentRequestDto request){
-        return ResponseEntity.ok(studentService.updateStudent(request));
+    public ResponseEntity<String> updateStudent(@RequestParam Long id,@RequestBody StudentRequestDto request){
+        return ResponseEntity.ok(studentService.updateStudent(id,request));
     }
     @GetMapping("/byId")
     public ResponseEntity<StudentResponseDto> findStudentById(@RequestParam Long id){

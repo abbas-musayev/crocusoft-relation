@@ -15,12 +15,9 @@ import java.util.List;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class StudentRequestDto {
-    Long id;
 
     String name;
     String surname;
-
     List<Long> courses;
-
     AddressRequestDto address;
 }

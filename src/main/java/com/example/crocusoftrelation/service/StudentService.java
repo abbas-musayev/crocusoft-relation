@@ -8,7 +8,7 @@ import java.util.List;
 public interface StudentService {
 
     String saveStudent(StudentRequestDto request);
-    String updateStudent(StudentRequestDto request);
+    String updateStudent(Long id,StudentRequestDto request);
     StudentResponseDto findStudentById(Long id);
     List<StudentResponseDto> findAllStudents();
     List<StudentResponseDto> findStudentsByCourseId(Long id);
