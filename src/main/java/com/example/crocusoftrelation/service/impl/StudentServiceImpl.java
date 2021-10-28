@@ -32,7 +32,7 @@ public class StudentServiceImpl implements StudentService {
 
         Student map = modelMapper.map(request, Student.class);
         for (Long item : request.getCourses()) {
-//          The reason I write if here is not to throw an exception directly when there is no student_id
+//          The reason I write if here is not to throw an exception directly when there is no course_id
 //          Because when a student saves, he may not join any course
             if (item!=null || item!=0){
                 Course course = courseRepo.findById(item).get();
@@ -48,6 +48,12 @@ public class StudentServiceImpl implements StudentService {
         Student student = studentRepo.findById(id)
                 .orElseThrow(() -> new CustomNotFoundException("Student id:" + id + " does not exist"));
 
+        if (request.getCourses().isEmpty()){
+            throw new CustomNotFoundException("CourseList is empty");
+        }
+
+        student.setName(request.getName());
+        student.setSurname(request.getSurname());
         List<Course> courses = student.getCourses();
         for (Long item : request.getCourses()) {
             Course course = courseRepo.findById(item)
@@ -57,20 +63,6 @@ public class StudentServiceImpl implements StudentService {
         student.setCourses(courses);
         studentRepo.save(student);
         return "Student Saved";
-
-//        var map = modelMapper.map(id, Student.class);
-//
-//        List<Course> courses = courseRepo.findCoursesByStudentId(id);
-//
-//        for (Long item : request.getCourses()) {
-//            Course course = courseRepo.findById(item)
-//                    .orElseThrow(() -> new CustomNotFoundException("Course Id does not exist"));
-//            courses.add(course);
-//        }
-//
-//        map.setCourses(courses);
-//        studentRepo.save(map);
-//        return "Student Updated";
     }
 
     @Override

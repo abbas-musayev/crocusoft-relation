@@ -31,11 +31,10 @@ public class CourseServiceImpl implements CourseService {
 
         Course map = modelMapper.map(request, Course.class);
 
-        if (request.getStudents().isEmpty()){
-            throw new CustomNotFoundException("StudentList is Empty");
-        }
         for (Long item : request.getStudents()) {
-            if (item!=0) {
+//          The reason I'm writing if here is not to throw an exception when student_id isn't there
+//          Because when a course is saved, it may not be any student
+            if (item!=null) {
                 var student = studentRepo.findById(item)
                         .orElseThrow(()-> new CustomNotFoundException("Student does not exist"));
                 map.getStudents().add(student);
@@ -53,7 +52,11 @@ public class CourseServiceImpl implements CourseService {
         Course course = courseRepo.findById(id)
                 .orElseThrow(() -> new CustomNotFoundException("Course id:" + id + " does not exist"));
 
+        if (request.getStudents().isEmpty()){
+            throw new CustomNotFoundException("StudentList is Empty");
+        }
         course.setName(request.getName());
+
         List<Student> students = course.getStudents();
         for (Long item : request.getStudents()) {
             Student student = studentRepo.findById(item)
@@ -63,22 +66,6 @@ public class CourseServiceImpl implements CourseService {
         course.setStudents(students);
         courseRepo.save(course);
         return "Course Saved";
-//        if (request.getId()==0)
-//            throw new CustomNotFoundException("The id of the course must be 0 or null");
-//
-//        Course map = modelMapper.map(request, Course.class);
-//
-//        List<Student> students = studentRepo.findStudentsByCourseId(request.getId());
-//
-//        for (Long item : request.getStudents()) {
-//            Student student = studentRepo.findById(item)
-//                    .orElseThrow(() -> new CustomNotFoundException("Student id does not exist"));
-//            students.add(student);
-//        }
-//
-//        map.setStudents(students);
-//        courseRepo.save(map);
-//        return "Course Updated";
     }
 
     @Override
